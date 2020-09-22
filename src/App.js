@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import { Container, Row, Col} from 'react-bootstrap';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Home from './components/Home'
+import Navigationbar from './components/Navigationbar'
+import ProjetList from './components/Projet/ProjetList'
+import ProjetModif from './components/Projet/ProjetModif'
+import PageNotFound from './components/PageNotFound'
+
+
+class App extends Component {
+  render()
+  {
+    const marginTop = { marginTop:"20px"}
+    return (
+      <Router>
+        <Navigationbar/>
+          <Container>
+            <Row>
+              <Col lg={12} style={marginTop}>
+              <Switch>
+                <Route path="/" exact component={Home}/>
+                <Route path="/projet" exact component={ProjetList}/>
+                <Route path="/projet/modif" exact component={ProjetModif}/>
+                <Route  component={PageNotFound}/>
+              </Switch>
+              </Col>
+            </Row>
+          </Container>
+      </Router>
+    );
+  }
 }
-
 export default App;
