@@ -9,6 +9,7 @@ import Navigationbar from './components/Navigationbar'
 import ProjetList from './components/Projet/ProjetList'
 import ProjetModif from './components/Projet/ProjetModif'
 import PageNotFound from './components/PageNotFound'
+import Toogle from './components/Projet/Toogle';
 
 
 class App extends Component {
@@ -24,7 +25,8 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={Home}/>
                 <Route path="/projet" exact component={ProjetList}/>
-                <Route path="/projet/modif" exact component={ProjetModif}/>
+                <Route path="/toogle" exact component={Toogle}/>
+                <Route path="/projet/modif/:id" exact component={ProjetModif}/>
                 <Route  component={PageNotFound}/>
               </Switch>
               </Col>
