@@ -9,7 +9,7 @@ class Navigationbar extends React.Component {
                 <Link to={"/"} className="nav-link">Home</Link>
                 <Link to={"/projet"} className="nav-link">Projets</Link>
                 <Link to={"/toogle"} className="nav-link">Toogle</Link>
-                <Link to={""} className="nav-link">Encadrants</Link>
+                <Link to={"/Encadrants"} className="nav-link">Encadrants</Link>
                 <Link to={""} className="nav-link">Séances d'encadrements</Link>
             </Navbar>
         );
