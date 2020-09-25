@@ -12,7 +12,7 @@ class ProjetModif extends Component {
     {
         const id = this.props.match.params.id;
 
-        const res = await axios.get('http://localhost:9000/projets/'+id);
+        const res = await axios.get('http://localhost:9090/projets/'+id);
         
         console.log(res.data.titre)
 
@@ -67,7 +67,7 @@ class ProjetModif extends Component {
             technologies:this.state.technologies
         }
 
-        await axios.put("http://localhost:9000/projets/"+id, projet)
+        await axios.put("http://localhost:9090/projets/"+id, projet)
         .then(response => {
             if (response.data != null) 
             {
@@ -89,8 +89,6 @@ class ProjetModif extends Component {
             </blockquote>
 
             <Card className={"border border-dark bg-dark text-white"}>
-
-                <Card.Header> Ajouter une projet </Card.Header>
 
                 <div style={{"display":this.state.showModifToast ? "block" : "none"}}>
                 <ToastModif children = {{showModifToast:this.state.showModifToast, message:"Projet modifié avec succès.",type:"success"}}/> 

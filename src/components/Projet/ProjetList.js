@@ -4,8 +4,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faList, faEdit, faTrash,faPlus } from '@fortawesome/free-solid-svg-icons';
 import {Jumbotron} from 'react-bootstrap';
 import {Link} from 'react-router-dom';
-import ToastSupp from './Toasts/ToastSupp';
-import ToastAjout from './Toasts/ToastAjout';
+import ToastSupp from '../Toasts/ToastSupp';
+import ToastAjout from '../Toasts/ToastAjout';
 
 import axios from 'axios';
 
@@ -23,7 +23,7 @@ class ProjetList extends Component {
     constructor(props) 
     {
         super(props);
-        this.state = { projets: [], isToggleOn: true};
+        this.state = { projets: [], isToggleOn: false};
         this.projetChange = this.projetChange.bind(this);
         this.ajoutProjet = this.ajoutProjet.bind(this);
 
@@ -38,7 +38,7 @@ class ProjetList extends Component {
 
     componentDidMount() 
     {
-        fetch('http://localhost:9000/projets')
+        fetch('http://localhost:9090/projets')
         .then((response) => response.json())
         .then((responseData) =>  {this.setState({ projets: responseData});})
         .catch(err => console.error(err));
@@ -47,7 +47,6 @@ class ProjetList extends Component {
     
     ajoutProjet(event) {
         event.preventDefault();
-
         const projet= {
             titre:this.state.titre,
             description:this.state.description,
@@ -55,7 +54,7 @@ class ProjetList extends Component {
             duree:this.state.duree
         }
 
-        axios.post("http://localhost:9000/projets", projet)
+        axios.post("http://localhost:9090/projets", projet)
         .then(response => {
             if (response.data != null) 
             {
@@ -68,7 +67,7 @@ class ProjetList extends Component {
     }
 
     ProjetSupp = (projetId) => { 
-        axios.delete("http://localhost:9000/projets/"+projetId).then(response => 
+        axios.delete("http://localhost:9090/projets/"+projetId).then(response => 
         {
             if(response.data != null)
             {
@@ -84,11 +83,6 @@ class ProjetList extends Component {
     projetChange(event) 
     {
         this.setState ({ [event.target.name] : event.target.value });
-    }
-
-    toggleAjout() 
-    {
-        //var AjoutForm = document.getElementById('FormAjout');
     }
 
 

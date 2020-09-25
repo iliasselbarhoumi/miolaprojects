@@ -8,13 +8,11 @@ import Home from './components/Home'
 import Navigationbar from './components/Navigationbar'
 import ProjetList from './components/Projet/ProjetList'
 import ProjetModif from './components/Projet/ProjetModif'
+import EncadrantsList from './components/Encadrant/EncadrantsList';
+import updateEncadrant from './components/Encadrant/updateEncadrant';
 import PageNotFound from './components/PageNotFound'
-import Toogle from './components/Projet/Toogle';
 
 
-import EncadrantsList from './components/EncadrantsList';
-import addEncadrant from './components/addEncadrant';
-import updateEncadrant from './components/updateEncadrant';
 
 class App extends Component {
   render()
@@ -29,13 +27,12 @@ class App extends Component {
               <Switch>
                 <Route path="/" exact component={Home}/>
                 
-                <Route path="/Encadrants" exact component={EncadrantsList}/>
-                <Route path="/add" exact component={addEncadrant}/>
-                <Route path="/update/Encadrants/:id" exact component={updateEncadrant}/>
-                
+                <Route path="/encadrant" exact component={EncadrantsList}/>
+                <Route path="/encadrant/modif/:id" exact component={updateEncadrant}/>
+                s
                 <Route path="/projet" exact component={ProjetList}/>
-                <Route path="/toogle" exact component={Toogle}/>
                 <Route path="/projet/modif/:id" exact component={ProjetModif}/>
+
                 <Route  component={PageNotFound}/>
               </Switch>
               </Col>
