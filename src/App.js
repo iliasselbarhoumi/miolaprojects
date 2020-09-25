@@ -12,6 +12,10 @@ import PageNotFound from './components/PageNotFound'
 import Toogle from './components/Projet/Toogle';
 
 
+import EncadrantsList from './components/EncadrantsList';
+import addEncadrant from './components/addEncadrant';
+import updateEncadrant from './components/updateEncadrant';
+
 class App extends Component {
   render()
   {
@@ -24,6 +28,11 @@ class App extends Component {
               <Col lg={12} style={marginTop}>
               <Switch>
                 <Route path="/" exact component={Home}/>
+                
+                <Route path="/Encadrants" exact component={EncadrantsList}/>
+                <Route path="/add" exact component={addEncadrant}/>
+                <Route path="/update/Encadrants/:id" exact component={updateEncadrant}/>
+                
                 <Route path="/projet" exact component={ProjetList}/>
                 <Route path="/toogle" exact component={Toogle}/>
                 <Route path="/projet/modif/:id" exact component={ProjetModif}/>
