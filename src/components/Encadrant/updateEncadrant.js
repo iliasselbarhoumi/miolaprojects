@@ -63,7 +63,7 @@ class EncadrantModif extends Component {
             departement:this.state.departement
         }
 
-        await axios.put("http://localhost:9090/encadrants/"+id, encadrant)
+        await axios.patch("http://localhost:9090/encadrants/"+id, encadrant)
         .then(response => {
             if (response.data != null) 
             {

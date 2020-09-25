@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {  faEdit } from '@fortawesome/free-solid-svg-icons';
 import {Jumbotron} from 'react-bootstrap';
 import {  Button, Card, Form, Col } from 'react-bootstrap';
-import ToastModif from './Toasts/ToastModif';
+import ToastModif from '../Toasts/ToastModif';
 import axios from 'axios';
 
 class ProjetModif extends Component {
@@ -67,7 +67,7 @@ class ProjetModif extends Component {
             technologies:this.state.technologies
         }
 
-        await axios.put("http://localhost:9090/projets/"+id, projet)
+        await axios.patch("http://localhost:9090/projets/"+id, projet)
         .then(response => {
             if (response.data != null) 
             {

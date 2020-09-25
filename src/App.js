@@ -10,6 +10,8 @@ import ProjetList from './components/Projet/ProjetList'
 import ProjetModif from './components/Projet/ProjetModif'
 import EncadrantsList from './components/Encadrant/EncadrantsList';
 import updateEncadrant from './components/Encadrant/updateEncadrant';
+import EtudiantsList from './components/Etudiant/EtudiantList';
+import updateEtudiant from './components/Etudiant/UpdateEtudiant';
 import PageNotFound from './components/PageNotFound'
 
 
@@ -29,7 +31,10 @@ class App extends Component {
                 
                 <Route path="/encadrant" exact component={EncadrantsList}/>
                 <Route path="/encadrant/modif/:id" exact component={updateEncadrant}/>
-                s
+
+                <Route path="/etudiant" exact component={EtudiantsList}/>
+                <Route path="/etudiant/modif/:id" exact component={updateEtudiant}/>
+                
                 <Route path="/projet" exact component={ProjetList}/>
                 <Route path="/projet/modif/:id" exact component={ProjetModif}/>
 
