@@ -5,6 +5,7 @@ import {  faEdit } from '@fortawesome/free-solid-svg-icons';
 import {Jumbotron} from 'react-bootstrap';
 import axios from 'axios'
 import ToastModif from '../Toasts/ToastModif';
+import NavigationBar from '../Navigationbar';
 
 class EncadrantModif extends Component {
    
@@ -80,8 +81,10 @@ class EncadrantModif extends Component {
     render(){
 
         return(
-
-            <Jumbotron className="bg-dark text-white">
+            <div>
+                <NavigationBar/>
+                <br/>
+                <Jumbotron className="bg-dark text-white">
             <h1><FontAwesomeIcon icon={faEdit} /> Modifier un encadrant</h1>
             <blockquote className= "blockquote mb-0">
                 <p>Vous pouvez changer les informations que vous voulez et sauvegarder</p>
@@ -136,6 +139,8 @@ class EncadrantModif extends Component {
                 </Form>
                 </Card>
             </Jumbotron>
+            </div>
+            
 );
 }
 }

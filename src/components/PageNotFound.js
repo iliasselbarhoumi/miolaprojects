@@ -6,7 +6,7 @@ class PageNotFound extends Component {
         return (
             <div>
                 <h2>Page Not Found 404</h2>
-                Click on this <Link to={"/"}>link</Link> to go to the homepage.
+                Click on this <Link to={"/home"}>link</Link> to go to the homepage.
             </div>
         )
     }

@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import React, { Component } from "react";
+import {BrowserRouter as Router, Switch, Route, } from 'react-router-dom';
 import { Container, Row, Col} from 'react-bootstrap';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,7 +12,19 @@ import EncadrantsList from './components/Encadrant/EncadrantsList';
 import updateEncadrant from './components/Encadrant/updateEncadrant';
 import EtudiantsList from './components/Etudiant/EtudiantList';
 import updateEtudiant from './components/Etudiant/UpdateEtudiant';
+import GroupesList from './components/Groupe/GroupesList';
+import updateGroupe from './components/Groupe/updateGroupe';
+import ajoutEtudiantGroupe from './components/Groupe/addEtudiantGroupe';
 import PageNotFound from './components/PageNotFound'
+
+import Dashboard from "./components/authentication/Dashboard";
+import AuthService from "./components/services/auth.service";
+import Login from "./components/authentication/Login";
+import Register from "./components/authentication/Register";
+import Profile from "./components/authentication/Profile";
+import BoardUser from "./components/authentication/BoardUser";
+import BoardModerator from "./components/authentication/BoardModerator";
+import BoardAdmin from "./components/authentication/BoardAdmin";
 
 
 
@@ -22,12 +34,14 @@ class App extends Component {
     const marginTop = { marginTop:"20px"}
     return (
       <Router>
-        <Navigationbar/>
           <Container>
             <Row>
               <Col lg={12} style={marginTop}>
               <Switch>
-                <Route path="/" exact component={Home}/>
+               
+                <Route path={["/", "/login"]} exact component={Login}/>
+                
+                <Route path="/home" exact component={Home}/>
                 
                 <Route path="/encadrant" exact component={EncadrantsList}/>
                 <Route path="/encadrant/modif/:id" exact component={updateEncadrant}/>
@@ -38,7 +52,21 @@ class App extends Component {
                 <Route path="/projet" exact component={ProjetList}/>
                 <Route path="/projet/modif/:id" exact component={ProjetModif}/>
 
-                <Route  component={PageNotFound}/>
+                <Route path="/groupe" exact component={GroupesList}/>
+                <Route path="/groupe/modif/:id" exact component={updateGroupe}/>
+                <Route path="/groupe/ajoutetudiant/:id" exact component={ajoutEtudiantGroupe}/>
+
+                <Route path="/dashboard" exact component={Dashboard}/>
+
+                <Route path="/register" exact component={Register} /> 
+                <Route path="/profile" exact component={Profile} /> 
+
+                <Route path="/user"exact component={BoardUser} /> 
+                <Route path="/mod" exact component={BoardModerator} /> 
+                <Route path="/admin" exact component={BoardAdmin}/>
+
+                <Route component={PageNotFound} />
+
               </Switch>
               </Col>
             </Row>

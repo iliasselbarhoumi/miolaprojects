@@ -5,6 +5,8 @@ import {  faEdit } from '@fortawesome/free-solid-svg-icons';
 import {Jumbotron} from 'react-bootstrap';
 import axios from 'axios'
 import ToastModif from '../Toasts/ToastModif';
+import NavigationBar from '../Navigationbar';
+
 
 class EtudiantModif extends Component {
    
@@ -88,63 +90,67 @@ class EtudiantModif extends Component {
     render(){
 
         return(
+                <div>
+                <NavigationBar/>
+                <br/>
+                <Jumbotron className="bg-dark text-white">
+                    <h1><FontAwesomeIcon icon={faEdit} /> Modifier un étudiant</h1>
+                    <blockquote className= "blockquote mb-0">
+                        <p>Vous pouvez changer les informations que vous voulez et sauvegarder</p>
+                    </blockquote>
 
-            <Jumbotron className="bg-dark text-white">
-            <h1><FontAwesomeIcon icon={faEdit} /> Modifier un étudiant</h1>
-            <blockquote className= "blockquote mb-0">
-                <p>Vous pouvez changer les informations que vous voulez et sauvegarder</p>
-            </blockquote>
+                        <Card className={"border border-dark bg-dark text-white"}>
 
-                <Card className={"border border-dark bg-dark text-white"}>
+                            <div style={{"display":this.state.showModifToast ? "block" : "none"}}>
+                            <ToastModif children = {{showModifToast:this.state.showModifToast, message:"Etudiant modifié avec succès.",type:"success"}}/> 
+                            </div>
 
-                    <div style={{"display":this.state.showModifToast ? "block" : "none"}}>
-                    <ToastModif children = {{showModifToast:this.state.showModifToast, message:"Etudiant modifié avec succès.",type:"success"}}/> 
-                    </div>
+                            <Form onSubmit={this.updateEtudiant} id="EtudiantFormId">
 
-                    <Form onSubmit={this.updateEtudiant} id="EtudiantFormId">
+                            <Card.Body>
+                    
+                                <Form.Row>
+                                        <Form.Group as={Col} controlId="formGridNom">
+                                        <Form.Label> Nom </Form.Label>
+                                        <Form.Control name="nom" autoComplete="off" required type="text"
+                                        className={"bg-dark text-white"}
+                                        value = {this.state.nom} onChange = {this.etudiantChange} placeholder= "Entrez Nom Etudiant"/>
+                                        </Form.Group>
 
-                    <Card.Body>
-               
-                        <Form.Row>
-                                <Form.Group as={Col} controlId="formGridNom">
-                                <Form.Label> Nom </Form.Label>
-                                <Form.Control name="nom" autoComplete="off" required type="text"
-                                className={"bg-dark text-white"}
-                                value = {this.state.nom} onChange = {this.etudiantChange} placeholder= "Entrez Nom Etudiant"/>
-                                </Form.Group>
+                                        <Form.Group as={Col} controlId="formGridPrenom">
+                                        <Form.Label> Prenom </Form.Label>
+                                        <Form.Control name="prenom" autoComplete="off" required type="text"
+                                        className={"bg-dark text-white"}
+                                        value = {this.state.prenom} onChange = {this.etudiantChange} placeholder= "Entrez Prenom Etudiant"/>
+                                        </Form.Group>
+                                    </Form.Row>
 
-                                <Form.Group as={Col} controlId="formGridPrenom">
-                                <Form.Label> Prenom </Form.Label>
-                                <Form.Control name="prenom" autoComplete="off" required type="text"
-                                className={"bg-dark text-white"}
-                                value = {this.state.prenom} onChange = {this.etudiantChange} placeholder= "Entrez Prenom Etudiant"/>
-                                </Form.Group>
-                            </Form.Row>
+                                    <Form.Row>
+                                        <Form.Group as={Col} controlId="formGridCne">
+                                        <Form.Label> CNE </Form.Label>
+                                        <Form.Control name="cne" autoComplete="off" required type="text"
+                                        className={"bg-dark text-white"}
+                                        value = {this.state.cne} onChange = {this.etudiantChange} placeholder= "Entrez CNE Etudiant"/>
+                                        </Form.Group>
 
-                            <Form.Row>
-                                <Form.Group as={Col} controlId="formGridCne">
-                                <Form.Label> CNE </Form.Label>
-                                <Form.Control name="cne" autoComplete="off" required type="text"
-                                className={"bg-dark text-white"}
-                                value = {this.state.cne} onChange = {this.etudiantChange} placeholder= "Entrez CNE Etudiant"/>
-                                </Form.Group>
+                                        <Form.Group as={Col} controlId="formGridFiliere">
+                                        <Form.Label> Filière </Form.Label>
+                                        <Form.Control name="filiere" autoComplete="off" required type="text"
+                                        className={"bg-dark text-white"}
+                                        value = {this.state.filiere} onChange = {this.etudiantChange} placeholder= "Entrez Filière Etudiant"/>
+                                        </Form.Group>
+                                    </Form.Row>
 
-                                <Form.Group as={Col} controlId="formGridFiliere">
-                                <Form.Label> Filière </Form.Label>
-                                <Form.Control name="filiere" autoComplete="off" required type="text"
-                                className={"bg-dark text-white"}
-                                value = {this.state.filiere} onChange = {this.etudiantChange} placeholder= "Entrez Filière Etudiant"/>
-                                </Form.Group>
-                            </Form.Row>
+                                </Card.Body>
 
-                        </Card.Body>
-
-                    <Card.Footer style={{"textAlign":"center"}}>
-                        <Button size="lm" variant="primary" type="submit"> Modifier </Button>
-                    </Card.Footer>
-                </Form>
-                </Card>
-            </Jumbotron>
+                            <Card.Footer style={{"textAlign":"center"}}>
+                                <Button size="lm" variant="primary" type="submit"> Modifier </Button>
+                            </Card.Footer>
+                        </Form>
+                        </Card>
+                    </Jumbotron>
+                </div>
+            
 );
 }
 }
