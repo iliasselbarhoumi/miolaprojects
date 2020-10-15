@@ -5,7 +5,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Home from './components/Home'
-import Navigationbar from './components/Navigationbar'
 import ProjetList from './components/Projet/ProjetList'
 import ProjetModif from './components/Projet/ProjetModif'
 import EncadrantsList from './components/Encadrant/EncadrantsList';
@@ -18,7 +17,6 @@ import ajoutEtudiantGroupe from './components/Groupe/addEtudiantGroupe';
 import PageNotFound from './components/PageNotFound'
 
 import Dashboard from "./components/authentication/Dashboard";
-import AuthService from "./components/services/auth.service";
 import Login from "./components/authentication/Login";
 import Register from "./components/authentication/Register";
 import Profile from "./components/authentication/Profile";

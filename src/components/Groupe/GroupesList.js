@@ -8,7 +8,12 @@ import { Link } from "react-router-dom";
 import {Jumbotron} from 'react-bootstrap';
 import ToastAjout from '../Toasts/ToastAjout';
 import NavigationBar from '../Navigationbar';
+import AuthService from "../services/auth.service";
 
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
 
 class GroupesList extends Component {
 
@@ -19,25 +24,36 @@ class GroupesList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { Groupes: [] , isToggleOn: false};
+    this.state = { Groupes: [] , isToggleOn: false, currentuser: AuthService.getCurrentUser()};
 
     this.groupeChange = this.groupeChange.bind(this);
     this.ajoutGroupe = this.ajoutGroupe.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    fetch("http://localhost:9090/groupes")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ Groupes: responseData });
-      })
-      .catch((err) => console.error(err));
-  }
+
+    componentDidMount() 
+    {   
+        console.log(token)
+
+        if(token !== "") 
+        {
+        const api = `http://localhost:9090/groupes`
+        axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
+        .then(res => {
+            console.log(res.data);
+            this.setState({
+            Groupes: res.data,  
+            isLoaded : true,
+            redirectToReferrer: false})
+        })          
+    }
+    else { this.props.history.push('/login') }
+    }
 
   deleteGroupe = (groupeId) => {
     axios
-      .delete("http://localhost:9090/groupes/" + groupeId)
+      .delete("http://localhost:9090/groupes/" + groupeId, { headers: {"Authorization" : `Bearer ${token}`} })
       .then((response) => {
         if (response.data != null) 
         {
@@ -56,7 +72,7 @@ class GroupesList extends Component {
         nom:this.state.nom
     }
 
-    axios.post("http://localhost:9090/groupes", groupe)
+    axios.post("http://localhost:9090/groupes", groupe, { headers: {"Authorization" : `Bearer ${token}`} })
     .then(response => {
         if (response.data != null) 
         {

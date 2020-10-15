@@ -6,17 +6,26 @@ import {Jumbotron} from 'react-bootstrap';
 import axios from 'axios'
 import ToastModif from '../Toasts/ToastModif';
 import NavigationBar from '../Navigationbar';
+import AuthService from "../services/auth.service";
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
 
 class EncadrantModif extends Component {
    
     async componentDidMount() 
     {
-        const id = this.props.match.params.id;
-        const res = await axios.get('http://localhost:9090/groupes/'+id);
-        this.setState({
-            id: id,
-            nom : res.data.nom
-        });
+        if(token !== "")
+        {
+            const id = this.props.match.params.id;
+            const res = await axios.get('http://localhost:9090/groupes/'+id, { headers: {"Authorization" : `Bearer ${token}`} });
+            this.setState({
+                id: id,
+                nom : res.data.nom
+            });
+        }
+        else {this.props.history.push('/login') }
     }
 
 
@@ -50,7 +59,7 @@ class EncadrantModif extends Component {
             nom:this.state.nom
         }
 
-        await axios.patch("http://localhost:9090/groupes/"+id, groupe)
+        await axios.patch("http://localhost:9090/groupes/"+id, groupe, { headers: {"Authorization" : `Bearer ${token}`} })
         .then(response => {
             if (response.data != null) 
             {

@@ -5,25 +5,37 @@ import {Jumbotron} from 'react-bootstrap';
 import {  Button, Card, Form, Col } from 'react-bootstrap';
 import ToastModif from '../Toasts/ToastModif';
 import axios from 'axios';
+import AuthService from "../services/auth.service";
+
+
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
 
 class ProjetModif extends Component {
 
     async componentDidMount() 
     {
-        const id = this.props.match.params.id;
+        if(token !== "") 
+        {
+            const id = this.props.match.params.id;
 
-        const res = await axios.get('http://localhost:9090/projets/'+id);
-        
-        console.log(res.data.titre)
+            const res = await axios.get('http://localhost:9090/projets/'+id, { headers: {"Authorization" : `Bearer ${token}`} });
+            
+            console.log(res.data.titre)
 
-        this.setState({
-            id: id,
-            titre : res.data.titre,
-            description : res.data.description,
-            theme : res.data.theme,
-            duree : res.data.duree,
-            technologies : res.data.technologies
-        });
+            this.setState({
+                id: id,
+                titre : res.data.titre,
+                description : res.data.description,
+                theme : res.data.theme,
+                duree : res.data.duree,
+                technologies : res.data.technologies
+            });
+
+        }
+        else {this.props.history.push('/login') }
 
     }
 
@@ -67,7 +79,7 @@ class ProjetModif extends Component {
             technologies:this.state.technologies
         }
 
-        await axios.patch("http://localhost:9090/projets/"+id, projet)
+        await axios.patch("http://localhost:9090/projets/"+id, projet, { headers: {"Authorization" : `Bearer ${token}`} })
         .then(response => {
             if (response.data != null) 
             {

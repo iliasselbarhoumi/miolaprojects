@@ -8,7 +8,12 @@ import { Link } from "react-router-dom";
 import ToastAjout from '../Toasts/ToastAjout';
 import ToastSupp from "../Toasts/ToastSupp";
 import NavigationBar from '../Navigationbar';
+import AuthService from "../services/auth.service";
 
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
 
 class EtudiantsList extends Component 
 {
@@ -33,18 +38,28 @@ class EtudiantsList extends Component
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    fetch("http://localhost:9090/etudiants")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ Etudiants: responseData });
-      })
-      .catch((err) => console.error(err));
-  }
+    componentDidMount() 
+    {   
+      console.log(token)
+
+        if(token !== "") 
+        {
+          const api = `http://localhost:9090/etudiants`;
+          axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
+          .then(res => {
+              console.log(res.data);
+              this.setState({
+              Etudiants: res.data,  
+              isLoaded : true,
+              redirectToReferrer: false})
+          })
+        }
+        else {this.props.history.push('/login')}
+    }
 
   deleteEtudiant = (etudiantId) => {
     axios
-      .delete("http://localhost:9090/etudiants/" + etudiantId)
+      .delete("http://localhost:9090/etudiants/" + etudiantId, { headers: {"Authorization" : `Bearer ${token}`} })
       .then((response) => {
         if (response.data != null) 
         {
@@ -69,7 +84,7 @@ class EtudiantsList extends Component
         projectId: " "
     }
 
-    axios.post("http://localhost:9090/etudiants", etudiant)
+    axios.post("http://localhost:9090/etudiants", etudiant, { headers: {"Authorization" : `Bearer ${token}`} })
     .then(response => {
         if (response.data != null) 
         {

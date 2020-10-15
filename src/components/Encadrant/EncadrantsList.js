@@ -8,7 +8,12 @@ import { Link } from "react-router-dom";
 import {Jumbotron} from 'react-bootstrap';
 import ToastAjout from '../Toasts/ToastAjout';
 import NavigationBar from '../Navigationbar';
+import AuthService from '../services/auth.service'
 
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
 
 class EncadrantsList extends Component {
 
@@ -22,26 +27,33 @@ class EncadrantsList extends Component {
 
   constructor(props) {
     super(props);
-    this.state = { Encadrants: [] , isToggleOn: false};
+    this.state = { Encadrants: [] , isToggleOn: false, currentuser: AuthService.getCurrentUser()};
 
     this.encadrantChange = this.encadrantChange.bind(this);
     this.ajoutEncadrant = this.ajoutEncadrant.bind(this);
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    fetch("http://localhost:9090/encadrants")
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({ Encadrants: responseData });
-        console.log("ssss", responseData);
-      })
-      .catch((err) => console.error(err));
+  componentDidMount() 
+  {   
+      if(token !== "") 
+      {
+        const api = `http://localhost:9090/encadrants`
+        axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
+        .then(res => {
+            console.log(res.data);
+            this.setState({
+            Encadrants: res.data,  
+            isLoaded : true,
+            redirectToReferrer: false})
+        })
+    }
+    else {this.props.history.push('/login')}
   }
 
   deleteEncadrant = (encadrantId) => {
     axios
-      .delete("http://localhost:9090/encadrants/" + encadrantId)
+      .delete("http://localhost:9090/encadrants/" + encadrantId,  { headers: {"Authorization" : `Bearer ${token}`} })
       .then((response) => {
         if (response.data != null) 
         {
@@ -63,7 +75,7 @@ class EncadrantsList extends Component {
         departement:this.state.departement
     }
 
-    axios.post("http://localhost:9090/encadrants", encadrant)
+    axios.post("http://localhost:9090/encadrants", encadrant ,  { headers: {"Authorization" : `Bearer ${token}`} })
     .then(response => {
         if (response.data != null) 
         {

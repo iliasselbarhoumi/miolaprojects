@@ -6,25 +6,34 @@ import {Jumbotron} from 'react-bootstrap';
 import axios from 'axios'
 import ToastModif from '../Toasts/ToastModif';
 import NavigationBar from '../Navigationbar';
+import AuthService from '../services/auth.service'
+
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
 
 class EncadrantModif extends Component {
    
     async componentDidMount() 
     {
-        const id = this.props.match.params.id;
+        if(token !== "") 
+        {
+            const id = this.props.match.params.id;
 
-        const res = await axios.get('http://localhost:9090/encadrants/'+id);
-        
-        console.log(res.data.nom)
+            const res = await axios.get('http://localhost:9090/encadrants/'+id , { headers: {"Authorization" : `Bearer ${token}`} });
+            
+            console.log(res.data.nom)
 
-        this.setState({
-            id: id,
-            nom : res.data.nom,
-            prenom : res.data.prenom,
-            role : res.data.role,
-            departement : res.data.departement
-        });
-
+            this.setState({
+                id: id,
+                nom : res.data.nom,
+                prenom : res.data.prenom,
+                role : res.data.role,
+                departement : res.data.departement
+            });
+        }
+        else {this.props.history.push('/login') }
     }
 
 
@@ -64,7 +73,7 @@ class EncadrantModif extends Component {
             departement:this.state.departement
         }
 
-        await axios.patch("http://localhost:9090/encadrants/"+id, encadrant)
+        await axios.patch("http://localhost:9090/encadrants/"+id, encadrant, { headers: {"Authorization" : `Bearer ${token}`} })
         .then(response => {
             if (response.data != null) 
             {

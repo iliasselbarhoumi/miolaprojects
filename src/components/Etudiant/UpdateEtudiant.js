@@ -7,25 +7,37 @@ import axios from 'axios'
 import ToastModif from '../Toasts/ToastModif';
 import NavigationBar from '../Navigationbar';
 
+import AuthService from "../services/auth.service";
+
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }  
+
 
 class EtudiantModif extends Component {
    
     async componentDidMount() 
     {
-        const id = this.props.match.params.id;
+        if(token !== "")
+        {
+            const id = this.props.match.params.id;
 
-        const res = await axios.get('http://localhost:9090/etudiants/'+id);
-        
-        this.setState({
-            id: id,
-            nom : res.data.nom,
-            prenom : res.data.prenom,
-            cne : res.data.cne,
-            filiere : res.data.filiere,
-            groupKey : res.data.groupKey,
-            encadrantId : res.data.encadrantId,
-            projectId : res.data.projectId
-        });
+            const res = await axios.get('http://localhost:9090/etudiants/'+id, { headers: {"Authorization" : `Bearer ${token}`} });
+            
+            this.setState({
+                id: id,
+                nom : res.data.nom,
+                prenom : res.data.prenom,
+                cne : res.data.cne,
+                filiere : res.data.filiere,
+                groupKey : res.data.groupKey,
+                encadrantId : res.data.encadrantId,
+                projectId : res.data.projectId
+            });
+
+        }
+        else {this.props.history.push('/login') }
 
     }
 
@@ -73,7 +85,7 @@ class EtudiantModif extends Component {
             projectId :  " "
         }
 
-        await axios.patch("http://localhost:9090/etudiants/"+id, etudiant)
+        await axios.patch("http://localhost:9090/etudiants/"+id, etudiant, { headers: {"Authorization" : `Bearer ${token}`} })
         .then(response => {
             if (response.data != null) 
             {

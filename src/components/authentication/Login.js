@@ -2,7 +2,8 @@ import React, { useState, useRef } from "react";
 import Form from "react-validation/build/form";
 import Input from "react-validation/build/input";
 import CheckButton from "react-validation/build/button";
-import {useHistory} from 'react-router-dom'
+import {useHistory,Link} from 'react-router-dom'
+
 
 import AuthService from "../services/auth.service";
 
@@ -49,7 +50,7 @@ const Login = (props) => {
     if (checkBtn.current.context._errors.length === 0) {
       AuthService.login(username, password).then(
         () => {
-          History.push("/profile");
+          History.push("/projet");
           window.location.reload();
         },
         (error) => {
@@ -70,8 +71,8 @@ const Login = (props) => {
   };
 
   return (
-    <div className="col-md-4" style={{"display":"block"},{"margin":"auto"}}>
-      
+    <div className="col-md-4" style={{"display":"block","margin":"auto"}}>
+      <h2 style={{"width":"90%","display":"block","margin":"auto"}} >MiolaProjects Login</h2>
       <div className="card card-container">
         <img
           src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
@@ -110,6 +111,10 @@ const Login = (props) => {
           <CheckButton style={{ display: "none" }} ref={checkBtn} />
         </Form>
       </div>
+      <div>
+                <h2>Vous n'avez pas un compte?</h2>
+                 <Link to={"/register"}>Cliquez ici</Link> pour créer un compte.
+            </div>
     </div>
   );
 };

@@ -7,28 +7,32 @@ import {Link} from 'react-router-dom';
 import ToastSupp from '../Toasts/ToastSupp';
 import ToastAjout from '../Toasts/ToastAjout';
 import Navigationbar from '../Navigationbar';
+import axios from 'axios';
 import AuthService from "../services/auth.service";
 
 
-import axios from 'axios';
+
+const currUser  = AuthService.getCurrentUser();
+var token = "";
+if(currUser) { token = currUser.data.jwttoken; }
+
 
 class ProjetList extends Component {
-
-    User = AuthService.getCurrentUser();
-    
+  
     initialState = 
     {
         Titre:' ',
         Description:' ',
         Theme:' ',
         Duree:' ',
-        Technologies: []
+        Technologies: ' '
     };
 
     constructor(props) 
     {
         super(props);
-        this.state = { projets: [], isToggleOn: false, currentuser: {}};
+        this.state = { projets: [], isToggleOn: false};
+
         this.projetChange = this.projetChange.bind(this);
         this.ajoutProjet = this.ajoutProjet.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -41,15 +45,24 @@ class ProjetList extends Component {
       }
 
     componentDidMount() 
-    {
-        this.setState({ currentuser: AuthService.getCurrentUser() })
-        console.log(this.state.currentuser)
+    {   
+        console.log(token)
 
-        fetch('http://localhost:9090/projets')
-        .then((response) => response.json())
-        .then((responseData) =>  {this.setState({ projets: responseData});})
-        .catch(err => console.error(err));
-    }
+        if(token !== "") 
+        {
+            const api = `http://localhost:9090/projets`;
+            axios.get(api, { headers: {"Authorization" : `Bearer ${token}`} })
+            .then(res => {
+                console.log(res.data);
+                this.setState({
+                projets: res.data,  
+                isLoaded : true,
+                redirectToReferrer: false})
+            })
+        }
+        else { this.props.history.push('/login') }
+        
+    }   
 
     
     ajoutProjet(event) {
@@ -58,10 +71,11 @@ class ProjetList extends Component {
             titre:this.state.titre,
             description:this.state.description,
             theme:this.state.theme,
-            duree:this.state.duree
+            duree:this.state.duree,
+            technologies:this.state.technologies
         }
 
-        axios.post("http://localhost:9090/projets", projet)
+        axios.post("http://localhost:9090/projets", projet, { headers: {"Authorization" : `Bearer ${token}`} })
         .then(response => {
             if (response.data != null) 
             {
@@ -74,7 +88,8 @@ class ProjetList extends Component {
     }
 
     ProjetSupp = (projetId) => { 
-        axios.delete("http://localhost:9090/projets/"+projetId).then(response => 
+        axios.delete("http://localhost:9090/projets/"+projetId, { headers: {"Authorization" : `Bearer ${token}`} })
+        .then(response => 
         {
             if(response.data != null)
             {
@@ -233,7 +248,7 @@ class ProjetList extends Component {
                             </Table>
                         </Card.Body>
                     </Card>
-                    - <br/>{JSON.stringify(this.state.currentuser)}
+                   
                 </Jumbotron>
             </div>
     
